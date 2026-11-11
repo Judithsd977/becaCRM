@@ -11,7 +11,7 @@ namespace Library.Auxiliary.Constants.Entities
 {
     using Library.Auxiliary.Constants.Entities.Custom;
 
-    public partial class RecordE : CustomRecordE
+    public partial class RecordE : AccountRecordE
     {
         #region Standard Attributes
         public const string Id = "publisher_fieldname";

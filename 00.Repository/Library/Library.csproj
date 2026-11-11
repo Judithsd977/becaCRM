@@ -86,7 +86,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Auxiliary\Constants\Entities\Custom\CustomRecordE.cs" />
+    <Compile Include="Auxiliary\Constants\Entities\Custom\AccountRecordE.cs" />
+    <Compile Include="Auxiliary\Constants\Entities\AccountE.cs" />
     <Compile Include="Auxiliary\Constants\Entities\RecordE.cs" />
     <Compile Include="Auxiliary\Constants\Entities\Custom\StandardAttributesE.cs" />
     <Compile Include="Auxiliary\Constants\GlobalEnums\GlobalEnums.cs" />

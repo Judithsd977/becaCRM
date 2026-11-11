@@ -10,17 +10,18 @@
 namespace Plugins.AppName.Assemblies
 {
     using System;
-    using C = Library.Auxiliary.Constants;
-    using Microsoft.Xrm.Sdk;
-    using FactoryDataLayer.Interfaces;
-    using Plugins.AppName.Handler;
     using FactoryDataLayer;
+    using FactoryDataLayer.Interfaces;
+    using Microsoft.Xrm.Sdk;
+    using Plugins.AppName.Handler;
+    using C = Library.Auxiliary.Constants;
 
-    internal class P001EntityName : Plugin
+    public class P001Account : AccountPreCreate
     {
-        public P001EntityName()
+        public P001Account()
         {
-            RegisteredEvents.Add(new Tuple<int, string, string, Action<LocalPluginContext>>(C.Process.DynamicsProcess.PluginStage.PostOperation, C.Process.DynamicsProcess.PluginMessage.Update, C.Entities.RecordE.CF, PostOperationCreate));
+            RegisteredEvents.Add(new Tuple<int, string, string, Action<LocalPluginContext>>(
+                C.Process.DynamicsProcess.PluginStage.PostOperation, C.Process.DynamicsProcess.PluginMessage.Create, "account", PostOperationCreate));
         }
 
         protected void PostOperationCreate(LocalPluginContext localContext)
@@ -44,15 +45,24 @@ namespace Plugins.AppName.Assemblies
 
             #region Input parameters
 
-            Entity recordE = (Entity)localContext.PluginExecutionContext.InputParameters["Target"];
-            Entity preImageRecordE = (Entity)localContext.PluginExecutionContext.PreEntityImages["preImage"];
-            Entity postImageRecordE = (Entity)localContext.PluginExecutionContext.PreEntityImages["postImage"];
+            Entity recordE = localContext.PluginExecutionContext.InputParameters["Target"] as Entity;
+            if (recordE == null || recordE.LogicalName != "account")
+            {
+                localContext.TracingService.Trace("Target no es una entidad account. Saliendo.");
+                return;
+            }
+
+            // En Create/PostOperation no existe pre-image por defecto y las imágenes
+            // no son necesarias para esta lógica. No acceder a las colecciones de
+            // imágenes evita KeyNotFoundException si no se registraron.
+            Entity preImageRecordE = null;
+            Entity postImageRecordE = null;
 
             #endregion  Input parameters
 
             IDataFactory df = new DataFactory(localContext.OrganizationService, localContext.TracingService);
 
-            new P001EntityNameHandler(df, localContext.TracingService).PostOperationCreate(preImageRecordE, recordE, postImageRecordE);
+            new P001AccountHandler(df, localContext.TracingService).PostOperationCreate(preImageRecordE, recordE, postImageRecordE);
         }
 
     }

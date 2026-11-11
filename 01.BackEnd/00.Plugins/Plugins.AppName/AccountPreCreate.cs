@@ -23,7 +23,7 @@ namespace Plugins.AppName
     /// <summary>
     /// Base class for all Plugins.
     /// </summary>    
-    public class Plugin : IPlugin
+    public class AccountPreCreate : IPlugin
     {
         public Guid ServiceEndpointId { get; set; }
 
@@ -44,7 +44,7 @@ namespace Plugins.AppName
                 Guid guid = Guid.Empty;
                 if (String.IsNullOrEmpty(config) || !Guid.TryParse(config, out guid))
                 {
-                    throw new InvalidPluginExecutionException("Service endpoint ID should be passed as config.");
+                    //throw new InvalidPluginExecutionException("Service endpoint ID should be passed as config.");
                 }
 
                 this.ServiceEndpointId = guid;
@@ -122,17 +122,17 @@ namespace Plugins.AppName
         /// <value>The name of the child class.</value>
         protected string ChildClassName { get; private set; }
 
-        public Plugin()
+        public AccountPreCreate()
         {
 
         }
 
-        public Plugin(string unsecure)
+        public AccountPreCreate(string unsecure)
         {
             Guid guid = Guid.Empty;
             if (string.IsNullOrEmpty(unsecure) || !Guid.TryParse(unsecure, out guid))
             {
-                throw new InvalidPluginExecutionException("Service endpoint ID should be passed as config.");
+                //throw new InvalidPluginExecutionException("Service endpoint ID should be passed as config.");
             }
 
             this.ServiceEndpointId = guid;
@@ -433,7 +433,8 @@ namespace Plugins.AppName
                 (IPluginExecutionContext)localContext.ServiceProvider.GetService(typeof(IPluginExecutionContext));
 
             // The InputParameters collection contains all the data passed in the message request.
-            return context.InputParameters.Contains("Target");
+            return context.InputParameters.Contains("Target")
+                && context.InputParameters["Target"] is Entity;
         }
 
         /// <summary>
@@ -505,6 +506,12 @@ namespace Plugins.AppName
         /// <returns></returns>
         protected Entity GetPreImage(LocalPluginContext localContext)
         {
+            if (localContext == null || localContext.PluginExecutionContext == null
+                || !localContext.PluginExecutionContext.PreEntityImages.Contains("preImage"))
+            {
+                return null;
+            }
+
             return localContext.PluginExecutionContext.PreEntityImages["preImage"];
         }
 
@@ -516,6 +523,12 @@ namespace Plugins.AppName
         /// <returns></returns>
         protected Entity GetPostImage(LocalPluginContext localContext)
         {
+            if (localContext == null || localContext.PluginExecutionContext == null
+                || !localContext.PluginExecutionContext.PostEntityImages.Contains("postImage"))
+            {
+                return null;
+            }
+
             return localContext.PluginExecutionContext.PostEntityImages["postImage"];
         }
 

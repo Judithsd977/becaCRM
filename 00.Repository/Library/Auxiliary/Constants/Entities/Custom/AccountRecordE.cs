@@ -9,18 +9,24 @@
 
 namespace Library.Auxiliary.Constants.Entities.Custom
 {
-    public partial class CustomRecordE : StandardAttributesE
+    public partial class AccountRecordE : StandardAttributesE
     {
         #region Custom Attributes
-        public const string Title = "publisher_fieldname";
-        public const string Description = "publisher_fieldname";
-        public const string UserEmail = "publisher_fieldname";
-        public const string Longitude = "publisher_fieldname";
-        public const string Latitude = "publisher_fieldname";
-        public const string ExampleOptionSet = "publisher_fieldname";
+        public const string LogicalName = "account";
+        public const string Title = "name";
+        public const string CreditLlimit = "creditlimit";
+        public const string CreditHold = "creditonhold";
+        public const string PaymentTerms = "paymenttermscode";
+
+        public const string Description = "description";
+        public const string UserEmail = "emailaddress1";
+        public const string Longitude = "address1_longitude";
+        public const string Latitude = "address1_latitude";
+        public const string ExampleOptionSet = "industrycode";
+
         #endregion Custom Attributes
     }
-    public partial class CustomRecordE
+    public partial class AccountRecordE
     {
         #region Local enumValues
 

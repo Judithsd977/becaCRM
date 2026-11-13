@@ -168,14 +168,7 @@
   <ItemGroup>
     <None Include="app.config" />
     <None Include="key-plugin.pfx" />
-    <None Include="key-plugins.pfx" />
     <None Include="packages.config" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\..\00.Repository\Library\Library.csproj">
-      <Project>{1c2e8346-7727-452e-a861-9b1648fdc7bb}</Project>
-      <Name>Library</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
